@@ -1,0 +1,29 @@
+REPORTE DE AUTO-CORRECCIÓN DE PRUEBAS — MermaZero
+============================================================
+
+Total de selectores auto-corregidos: 4
+
+1. Elemento: campo_email_demo
+   Selector roto:      #correo-antiguo-que-ya-no-existe
+   Selector corregido: [data-testid="login-email"]
+   Similitud: 1.0  |  Vía: heurística
+   Hora: 2026-07-06T21:34:51
+
+2. Elemento: email
+   Selector roto:      #email-viejo
+   Selector corregido: [data-testid="login-email"]
+   Similitud: 1.0  |  Vía: heurística
+   Hora: 2026-07-06T21:34:53
+
+3. Elemento: password
+   Selector roto:      #pass-viejo
+   Selector corregido: [data-testid="login-password"]
+   Similitud: 1.0  |  Vía: heurística
+   Hora: 2026-07-06T21:34:54
+
+4. Elemento: boton
+   Selector roto:      #btn-viejo
+   Selector corregido: [data-testid="btn-login"]
+   Similitud: 1.0  |  Vía: heurística
+   Hora: 2026-07-06T21:34:54
+

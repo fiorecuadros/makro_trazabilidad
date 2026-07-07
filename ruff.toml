@@ -1,0 +1,16 @@
+# Configuración de análisis estático (ruff) — MermaZero
+# Revisa errores reales y de importación; ignora reglas puramente estilísticas.
+line-length = 120
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "W"]   # errores reales y pyflakes (sin reordenar imports)
+ignore = [
+    "E741",  # nombre de variable ambiguo (l) — preferencia de estilo
+    "F841",  # variable local asignada y no usada — no crítico
+    "E501",  # línea larga — no bloqueante
+]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]        # los __init__ pueden reexportar sin usar
+"tests_e2e/*" = ["E402"]        # el demo ajusta sys.path antes de importar

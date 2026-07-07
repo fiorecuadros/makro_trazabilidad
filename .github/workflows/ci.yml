@@ -1,0 +1,62 @@
+name: CI/CD - MermaZero
+
+# Se ejecuta automáticamente en cada push o pull request a main/master.
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  calidad-y-pruebas:
+    name: Análisis estático y pruebas automatizadas
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff bandit pytest-cov pytest-rerunfailures
+
+      - name: "Análisis estático — Ruff (linter)"
+        run: ruff check backend main.py seed.py tests_e2e
+
+      - name: "Análisis estático — Bandit (seguridad)"
+        run: bandit -r backend --severity-level medium
+
+      - name: Instalar navegador para las pruebas E2E
+        run: python -m playwright install --with-deps chromium
+
+      - name: Preparar la base de datos (usuario admin + datos)
+        run: python seed.py
+
+      - name: "Pruebas de regresión (unitarias + E2E) con cobertura"
+        run: |
+          pytest --reruns 2 --reruns-delay 3 \
+                 --cov=backend --cov=tests_e2e \
+                 --cov-report=term-missing --cov-report=xml
+
+      - name: Guardar reporte de auto-corrección (evidencia)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-autocorreccion
+          path: tests_e2e/healing_report/
+          if-no-files-found: ignore
+
+      - name: Guardar reporte de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura
+          path: coverage.xml
+          if-no-files-found: ignore

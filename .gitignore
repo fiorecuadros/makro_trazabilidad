@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Playwright / navegadores
+playwright-report/
+test-results/
+
+# Archivos generados por la demo
+reportes_descargados/
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

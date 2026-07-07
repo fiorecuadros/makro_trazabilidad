@@ -1,0 +1,34 @@
+[
+  {
+    "hora": "2026-07-06T21:34:51",
+    "elemento": "campo_email_demo",
+    "selector_roto": "#correo-antiguo-que-ya-no-existe",
+    "selector_corregido": "[data-testid=\"login-email\"]",
+    "similitud": 1.0,
+    "corregido_por": "heurística"
+  },
+  {
+    "hora": "2026-07-06T21:34:53",
+    "elemento": "email",
+    "selector_roto": "#email-viejo",
+    "selector_corregido": "[data-testid=\"login-email\"]",
+    "similitud": 1.0,
+    "corregido_por": "heurística"
+  },
+  {
+    "hora": "2026-07-06T21:34:54",
+    "elemento": "password",
+    "selector_roto": "#pass-viejo",
+    "selector_corregido": "[data-testid=\"login-password\"]",
+    "similitud": 1.0,
+    "corregido_por": "heurística"
+  },
+  {
+    "hora": "2026-07-06T21:34:54",
+    "elemento": "boton",
+    "selector_roto": "#btn-viejo",
+    "selector_corregido": "[data-testid=\"btn-login\"]",
+    "similitud": 1.0,
+    "corregido_por": "heurística"
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "campo_email": {
+    "tag": "input",
+    "id": "login-email",
+    "clases": [],
+    "texto": "",
+    "atributos": {
+      "type": "email",
+      "placeholder": "operador@makro.com",
+      "data-testid": "login-email"
+    }
+  },
+  "campo_password": {
+    "tag": "input",
+    "id": "login-password",
+    "clases": [],
+    "texto": "",
+    "atributos": {
+      "type": "password",
+      "placeholder": "••••••••",
+      "data-testid": "login-password"
+    }
+  },
+  "boton_ingresar": {
+    "tag": "button",
+    "id": "btn-login",
+    "clases": [
+      "btn-login"
+    ],
+    "texto": "Ingresar",
+    "atributos": {
+      "data-testid": "btn-login"
+    }
+  },
+  "nav_inventario": {
+    "tag": "a",
+    "id": "",
+    "clases": [
+      "nav-item"
+    ],
+    "texto": "📋 Control de Inventario",
+    "atributos": {
+      "data-testid": "nav-lotes"
+    }
+  },
+  "campo_email_demo": {
+    "tag": "input",
+    "id": "login-email",
+    "clases": [],
+    "texto": "",
+    "atributos": {
+      "type": "email",
+      "placeholder": "operador@makro.com",
+      "data-testid": "login-email"
+    }
+  },
+  "email": {
+    "tag": "input",
+    "id": "login-email",
+    "clases": [],
+    "texto": "",
+    "atributos": {
+      "type": "email",
+      "placeholder": "operador@makro.com",
+      "data-testid": "login-email"
+    }
+  },
+  "password": {
+    "tag": "input",
+    "id": "login-password",
+    "clases": [],
+    "texto": "",
+    "atributos": {
+      "type": "password",
+      "placeholder": "••••••••",
+      "data-testid": "login-password"
+    }
+  },
+  "boton": {
+    "tag": "button",
+    "id": "btn-login",
+    "clases": [
+      "btn-login"
+    ],
+    "texto": "Ingresar",
+    "atributos": {
+      "data-testid": "btn-login"
+    }
+  },
+  "nav_nuevo_lote": {
+    "tag": "a",
+    "id": "",
+    "clases": [
+      "nav-item"
+    ],
+    "texto": "➕ Ingreso de Producto",
+    "atributos": {
+      "data-testid": "nav-nuevo-lote"
+    }
+  },
+  "boton_registrar": {
+    "tag": "button",
+    "id": "btn-registrar",
+    "clases": [
+      "btn",
+      "btn-primary"
+    ],
+    "texto": "✓ Registrar Lote",
+    "atributos": {
+      "data-testid": "btn-registrar"
+    }
+  },
+  "nav_reportes": {
+    "tag": "a",
+    "id": "",
+    "clases": [
+      "nav-item"
+    ],
+    "texto": "📈 Análisis y Reportes",
+    "atributos": {
+      "data-testid": "nav-reportes"
+    }
+  }
+}

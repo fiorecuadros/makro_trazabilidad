@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MermaZero – Makro Chincha 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/styles.css?v=5"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════ LOGIN ═══════════════════ -->
+<div id="login-screen" class="login-screen">
+  <div class="login-grid"></div>
+  <div class="login-scan"></div>
+  <div class="login-circle c1"></div>
+  <div class="login-circle c2"></div>
+  <div class="login-circle c3"></div>
+
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-mark" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="27" stroke="var(--makro-dark)" stroke-width="3.5" opacity="0.12"/>
+          <path d="M32 6 a26 26 0 0 1 22.5 39" stroke="var(--makro-yellow)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M20 26 L28 34 L34 24 L44 38" stroke="var(--makro-dark)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="44" cy="38" r="4.5" fill="var(--makro-yellow)" stroke="var(--makro-dark)" stroke-width="2"/>
+        </svg>
+      </div>
+      <span class="login-wordmark">
+        <span class="w1">Merma</span><span class="w2">Zero</span>
+      </span>
+      <div class="login-tagline">Trazabilidad de perecibles · Makro Chincha</div>
+      <div class="login-divider"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" data-testid="login-email" placeholder="operador@makro.com" value="admin@makro.com"
+             onkeydown="if(event.key==='Enter') iniciarSesion(event)"/>
+    </div>
+    <div class="form-group" style="margin-top:.75rem">
+      <label>Contraseña</label>
+      <input type="password" id="login-password" data-testid="login-password" placeholder="••••••••" value="admin123"
+             onkeydown="if(event.key==='Enter') iniciarSesion(event)"/>
+    </div>
+
+    <button class="btn-login" id="btn-login" data-testid="btn-login" onclick="iniciarSesion(event)">
+      <div class="water-fill"  id="water-fill"></div>
+      <div class="gold-burst"  id="gold-burst"></div>
+      <div class="btn-login-label" id="btn-login-label">
+        <div class="btn-spin"  id="btn-spin"></div>
+        <svg class="btn-check" id="btn-check" viewBox="0 0 24 24"><polyline points="4,12 9,17 20,7"/></svg>
+        <span id="btn-text">Ingresar</span>
+      </div>
+    </button>
+
+    <p id="login-error" class="error-msg"></p>
+
+    <div class="login-restricted">
+      🔒 Acceso restringido · Solo personal autorizado
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ APP ═══════════════════ -->
+<div id="app" class="app hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-emblem" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="27" stroke="#0A1628" stroke-width="3.5" opacity="0.14"/>
+          <path d="M32 6 a26 26 0 0 1 22.5 39" stroke="#F5A800" stroke-width="4.5" stroke-linecap="round"/>
+          <path d="M20 26 L28 34 L34 24 L44 38" stroke="#0A1628" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="44" cy="38" r="4.5" fill="#F5A800" stroke="#0A1628" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <strong>MermaZero</strong>
+        <small>Makro Chincha · 2026</small>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Principal</div>
+        <a class="nav-item active" data-testid="nav-dashboard" onclick="ir('dashboard')">
+          <div class="nav-icon">📊</div> Centro de Mando
+        </a>
+        <a class="nav-item" data-testid="nav-lotes" onclick="ir('lotes')">
+          <div class="nav-icon">📋</div> Control de Inventario
+        </a>
+        <a class="nav-item" data-testid="nav-alertas" onclick="ir('alertas')">
+          <div class="nav-icon">🔔</div> Centro de Alertas
+          <span id="badge-alertas" class="badge hidden">0</span>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Acciones</div>
+        <a class="nav-item" data-testid="nav-nuevo-lote" onclick="ir('nuevo-lote')">
+          <div class="nav-icon">➕</div> Ingreso de Producto
+        </a>
+        <a class="nav-item" data-testid="nav-reportes" onclick="ir('reportes')">
+          <div class="nav-icon">📈</div> Análisis y Reportes
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-avatar">👤</div>
+      <div class="user-info">
+        <strong id="usuario-nombre">Operador</strong>
+        <small id="usuario-rol">–</small>
+      </div>
+      <button class="btn-logout" onclick="cerrarSesion()" title="Cerrar sesión">⏻</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="topbar-title" id="topbar-title">Centro de Mando</div>
+        <div class="topbar-subtitle" id="topbar-subtitle">Resumen operativo del almacén</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="fecha-actual"></div>
+        <button class="btn-refresh" id="btn-refresh" onclick="refrescarSeccion()" title="Actualizar">↻</button>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ══ DASHBOARD ══ -->
+      <section id="sec-dashboard" class="section active">
+
+        <div class="dash-hero" id="dash-hero">
+          <div class="dash-hero-main">
+            <div class="dash-hero-eyebrow">Estado operativo · <span id="hero-fecha">–</span></div>
+            <div class="dash-hero-title" id="hero-title">Cargando estado del almacén…</div>
+            <div class="dash-hero-sub" id="hero-sub"></div>
+          </div>
+          <div class="dash-hero-metric">
+            <div class="dash-hero-metric-num" id="hero-merma">S/. 0.00</div>
+            <div class="dash-hero-metric-label">Merma en riesgo</div>
+          </div>
+          <button class="dash-hero-cta" onclick="ir('alertas')">Ver alertas →</button>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card total">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-total">–</div>
+              <div class="kpi-label">Total Lotes</div>
+            </div>
+          </div>
+          <div class="kpi-card stock">
+            <div class="kpi-icon">✅</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-stock">–</div>
+              <div class="kpi-label">En Stock</div>
+            </div>
+          </div>
+          <div class="kpi-card roja">
+            <div class="kpi-icon">🔴</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-rojas">–</div>
+              <div class="kpi-label">Alertas Rojas</div>
+              <div class="kpi-trend danger" id="d-trend-rojas"></div>
+            </div>
+          </div>
+          <div class="kpi-card amarilla">
+            <div class="kpi-icon">🟡</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-amarillas">–</div>
+              <div class="kpi-label">Alertas Amarillas</div>
+            </div>
+          </div>
+          <div class="kpi-card vencido">
+            <div class="kpi-icon">⛔</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-vencidos">–</div>
+              <div class="kpi-label">Vencidos / Baja</div>
+            </div>
+          </div>
+          <div class="kpi-card merma">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-info">
+              <div class="kpi-num" id="d-merma" style="font-size:1.2rem">–</div>
+              <div class="kpi-label">Merma Valorizada (S/.)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="charts-row">
+          <div class="chart-card">
+            <h3><span class="chart-icon">🥧</span> Distribución por Alerta</h3>
+            <div class="chart-container"><canvas id="chart-donut"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3><span class="chart-icon">📊</span> Lotes por Categoría</h3>
+            <div class="chart-container"><canvas id="chart-categorias"></canvas></div>
+          </div>
+        </div>
+
+        <div class="recent-card">
+          <div class="card-header">
+            <h3>🚨 Lotes más urgentes</h3>
+            <a onclick="ir('alertas')">Ver todas las alertas →</a>
+          </div>
+          <div class="table-wrapper">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th>Código</th><th>Producto</th><th>Categoría</th>
+                  <th>Días para vencer</th><th>Nivel</th><th>Proveedor</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-urgentes"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ LOTES ══ -->
+      <section id="sec-lotes" class="section">
+        <div class="section-header">
+          <div>
+            <h2>Control de Inventario</h2>
+            <p class="text-muted" style="font-size:.8rem;margin-top:.2rem" id="lotes-count">–</p>
+          </div>
+          <div class="toolbar">
+            <div class="search-box">
+              <input type="text" id="buscar-lote" placeholder="Buscar producto o código…" oninput="filtrarTabla()"/>
+            </div>
+            <select class="filter-select" id="filtro-estado" onchange="filtrarTabla()">
+              <option value="">Todos los estados</option>
+              <option value="EN_STOCK">En Stock</option>
+              <option value="POR_VENCER">Por Vencer</option>
+              <option value="VENCIDO">Vencido</option>
+              <option value="DADO_DE_BAJA">Dado de Baja</option>
+            </select>
+            <select class="filter-select" id="filtro-alerta" onchange="filtrarTabla()">
+              <option value="">Todas las alertas</option>
+              <option value="ALERTA_ROJA">🔴 Alerta Roja</option>
+              <option value="ALERTA_AMARILLA">🟡 Alerta Amarilla</option>
+              <option value="SIN_ALERTA">✅ Sin alerta</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" onclick="exportarCSV()">⬇ CSV</button>
+            <button class="btn btn-primary btn-sm" onclick="ir('nuevo-lote')">+ Ingreso de Producto</button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th onclick="ordenarPor('codigo')">Código ⇅</th>
+                  <th onclick="ordenarPor('producto')">Producto ⇅</th>
+                  <th>Categoría</th>
+                  <th onclick="ordenarPor('cantidad')">Cantidad ⇅</th>
+                  <th>Proveedor</th>
+                  <th onclick="ordenarPor('fecha_vencimiento')">Vencimiento ⇅</th>
+                  <th onclick="ordenarPor('dias_para_vencer')">Días ⇅</th>
+                  <th>Estado</th>
+                  <th>Alerta</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-lotes"></tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="lotes-info-pag"></span>
+            <div class="pagination" id="paginacion"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ ALERTAS ══ -->
+      <section id="sec-alertas" class="section">
+        <div class="section-header"><h2>Centro de Alertas</h2></div>
+        <div class="alertas-toolbar">
+          <button class="filter-pill active"    data-filter="all"      onclick="filtrarAlertas('all',this)">Todas</button>
+          <button class="filter-pill roja"      data-filter="roja"     onclick="filtrarAlertas('roja',this)">🔴 Rojas</button>
+          <button class="filter-pill amarilla"  data-filter="amarilla" onclick="filtrarAlertas('amarilla',this)">🟡 Amarillas</button>
+        </div>
+        <div class="alertas-grid" id="alertas-grid"></div>
+        <div id="alertas-empty" class="empty-state hidden">
+          <div class="empty-icon">✅</div>
+          <h3>Sin alertas activas</h3>
+          <p>Todos los lotes están dentro del rango seguro de vencimiento.</p>
+        </div>
+      </section>
+
+      <!-- ══ NUEVO LOTE ══ -->
+      <section id="sec-nuevo-lote" class="section">
+        <div class="section-header"><h2>Ingreso de Producto</h2></div>
+        <div class="form-card">
+          <div class="form-section-title">Identificación del producto</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Código del lote *</label>
+              <input type="text" id="f-codigo" placeholder="LOT-2026-001"/>
+              <span class="field-error" id="err-codigo"></span>
+            </div>
+            <div class="form-group">
+              <label>Producto *</label>
+              <input type="text" id="f-producto" placeholder="Pollo Fresco Bandeja 1kg"/>
+            </div>
+            <div class="form-group">
+              <label>Categoría *</label>
+              <select id="f-categoria">
+                <option value="">Seleccionar categoría…</option>
+                <option>Carnes y Aves</option>
+                <option>Lácteos</option>
+                <option>Frutas y Verduras</option>
+                <option>Embutidos</option>
+                <option>Pescados y Mariscos</option>
+                <option>Panadería</option>
+                <option>Bebidas</option>
+                <option>Congelados</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Proveedor *</label>
+              <input type="text" id="f-proveedor" placeholder="Proveedor S.A.C."/>
+            </div>
+          </div>
+
+          <div class="form-section-title">Cantidad y logística</div>
+          <div class="form-grid three">
+            <div class="form-group">
+              <label>Cantidad *</label>
+              <input type="number" id="f-cantidad" placeholder="0" min="0.1" step="0.1"/>
+            </div>
+            <div class="form-group">
+              <label>Unidad</label>
+              <select id="f-unidad">
+                <option>kg</option><option>unidades</option>
+                <option>litros</option><option>cajas</option><option>bolsas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Costo unitario (S/.)</label>
+              <input type="number" id="f-costo" placeholder="0.00" min="0" step="0.01"/>
+            </div>
+            <div class="form-group">
+              <label>Fecha de ingreso *</label>
+              <input type="date" id="f-ingreso"/>
+            </div>
+            <div class="form-group">
+              <label>Fecha de vencimiento *</label>
+              <input type="date" id="f-vencimiento"/>
+            </div>
+            <div class="form-group">
+              <label>Ubicación en almacén *</label>
+              <input type="text" id="f-ubicacion" placeholder="Pasillo A – Estante 3"/>
+            </div>
+          </div>
+
+          <div id="preview-alerta" class="hidden"
+               style="margin-bottom:1rem;padding:.9rem 1.1rem;border-radius:var(--radius);border:1.5px solid;font-size:.85rem;font-weight:600;"></div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="limpiarFormulario()">Limpiar</button>
+            <button class="btn btn-secondary" onclick="ir('lotes')">Cancelar</button>
+            <button class="btn btn-primary" onclick="registrarLote()" id="btn-registrar" data-testid="btn-registrar">✓ Registrar Lote</button>
+          </div>
+          <div id="form-result"></div>
+        </div>
+      </section>
+
+      <!-- ══ REPORTES ══ -->
+      <section id="sec-reportes" class="section">
+        <div class="section-header"><h2>Análisis y Reportes</h2></div>
+        <div class="reportes-grid">
+          <div class="reporte-card" onclick="exportarCSV()">
+            <div class="reporte-icon">📄</div>
+            <h3>Exportar Inventario CSV</h3>
+            <p>Descarga todos los lotes activos con sus métricas de alerta.</p>
+          </div>
+          <div class="reporte-card" onclick="exportarMermasCSV()">
+            <div class="reporte-icon">💸</div>
+            <h3>Reporte de Mermas</h3>
+            <p>Lotes vencidos o dados de baja con valorización económica.</p>
+          </div>
+          <div class="reporte-card" onclick="exportarAlertasCSV()">
+            <div class="reporte-icon">🔔</div>
+            <h3>Reporte de Alertas</h3>
+            <p>Alertas activas clasificadas por nivel de urgencia.</p>
+          </div>
+        </div>
+        <div class="stats-table-card">
+          <div class="card-header">
+            <h3>📊 Resumen por Categoría</h3>
+          </div>
+          <div class="table-wrapper">
+            <table class="tabla">
+              <thead>
+                <tr>
+                  <th>Categoría</th><th>Total Lotes</th><th>En Stock</th>
+                  <th>Alerta Roja</th><th>Alerta Amarilla</th><th>Merma (S/.)</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-resumen-categoria"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR -->
+<div class="modal-overlay" id="modal-editar">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Editar Lote</h3>
+      <button class="modal-close" onclick="cerrarModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id"/>
+      <div class="form-group" style="margin-bottom:1rem">
+        <label>Cantidad</label>
+        <input type="number" id="edit-cantidad" min="0.1" step="0.1"/>
+      </div>
+      <div class="form-group" style="margin-bottom:1rem">
+        <label>Ubicación en almacén</label>
+        <input type="text" id="edit-ubicacion"/>
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select id="edit-estado">
+          <option value="EN_STOCK">En Stock</option>
+          <option value="POR_VENCER">Por Vencer</option>
+          <option value="VENCIDO">Vencido</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarEdicion()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="/static/js/app.js?v=5"></script>
+</body>
+</html>

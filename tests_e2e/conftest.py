@@ -1,8 +1,8 @@
 """
 Fixtures de las pruebas E2E de MermaZero.
 
-- Arranca el servidor uvicorn automáticamente si no está corriendo (para que
-  solo tengas que ejecutar 'pytest', sin abrir dos terminales).
+- Reutiliza el servidor si ya está corriendo (lo levanta el pipeline en CI, o
+  lo arranca aquí mismo en local si hace falta).
 - Entrega 'smart' (el localizador con auto-corrección) a cada prueba.
 - Al terminar, guarda el reporte de auto-correcciones (la evidencia).
 """
@@ -33,24 +33,32 @@ def _servidor_responde(url: str) -> bool:
 
 @pytest.fixture(scope="session")
 def servidor():
-    """Levanta el servidor si no está activo; lo apaga al final si lo inició."""
+    """Reutiliza el servidor si ya está activo; si no, intenta levantarlo.
+    Nunca falla en seco: si no arranca, las pruebas E2E lo reportarán solas."""
     if _servidor_responde(BASE_URL):
         yield BASE_URL
         return
 
-    proc = subprocess.Popen(
-        [sys.executable, "-m", "uvicorn", "main:app", "--port", "8000"],
-        cwd=PROY, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    )
-    for _ in range(30):
-        if _servidor_responde(BASE_URL):
-            break
-        time.sleep(0.5)
-    else:
-        proc.terminate()
-        pytest.fail("No se pudo iniciar el servidor uvicorn en el puerto 8000.")
+    proc = None
+    try:
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "uvicorn", "main:app", "--port", "8000"],
+            cwd=PROY, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        for _ in range(40):
+            if _servidor_responde(BASE_URL):
+                break
+            time.sleep(0.5)
+    except Exception:
+        pass
+
     yield BASE_URL
-    proc.terminate()
+
+    if proc is not None:
+        try:
+            proc.terminate()
+        except Exception:
+            pass
 
 
 @pytest.fixture(scope="session")

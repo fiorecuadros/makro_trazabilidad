@@ -31,7 +31,7 @@ def _servidor_responde(url: str) -> bool:
         return False
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def servidor():
     """Levanta el servidor si no está activo; lo apaga al final si lo inició."""
     if _servidor_responde(BASE_URL):

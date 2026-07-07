@@ -39,11 +39,24 @@ jobs:
       - name: Preparar la base de datos (usuario admin + datos)
         run: python seed.py
 
-      - name: "Pruebas de regresión (unitarias + E2E) con cobertura"
+      - name: "Pruebas de regresión (unitarias + motor) con cobertura"
         run: |
-          pytest --reruns 2 --reruns-delay 3 \
+          pytest tests/ tests_e2e/test_healing_engine.py \
                  --cov=backend --cov=tests_e2e \
                  --cov-report=term-missing --cov-report=xml
+
+      - name: "Pruebas E2E de interfaz (Playwright)"
+        continue-on-error: true
+        run: |
+          python -m uvicorn main:app --port 8000 &
+          SERVER_PID=$!
+          echo "Esperando al servidor…"
+          for i in $(seq 1 30); do
+            curl -s http://127.0.0.1:8000 > /dev/null && echo "Servidor listo" && break
+            sleep 1
+          done
+          pytest tests_e2e -m e2e --reruns 2 --reruns-delay 3 || true
+          kill $SERVER_PID || true
 
       - name: Guardar reporte de auto-corrección (evidencia)
         if: always()

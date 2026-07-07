@@ -1,0 +1,15 @@
+﻿fastapi
+uvicorn
+sqlalchemy
+pydantic
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+python-multipart
+jinja2
+aiofiles
+pytest
+pytest-cov
+httpx
+pytest-playwright
+playwright
